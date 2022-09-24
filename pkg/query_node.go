@@ -1,9 +1,9 @@
 package pkg
 
 import (
+	"fmt"
 	"strings"
 )
-
 
 const (
 	MUTATION = "Mutation"
@@ -71,8 +71,16 @@ func QueryNode(tokens []string) (map[string]Query, map[string]Node) {
 					}
 				}
 				i += 2
+				if tokens[i] == SQUARE_OPEN {
+					fmt.Println("list")
+					q.IsOutputList = true
+					i++
+				}
 				q.OutputTypes = append(q.OutputTypes, tokens[i])
 				qs = append(qs, q)
+				if q.IsOutputList {
+					i++
+				}
 				i++
 			}
 			i++
@@ -137,9 +145,15 @@ func QueryNode(tokens []string) (map[string]Query, map[string]Node) {
 				f := Field{}
 				f.Name = tokens[i]
 				i += 2
+				if tokens[i] == SQUARE_OPEN {
+					i++
+				}
 				f.Type = tokens[i]
 				n.Fileds = append(n.Fileds, f)
 				i++
+				if tokens[i] == SQUARE_CLOSE {
+					i++
+				}
 			}
 			nodes = append(nodes, n)
 			i++
@@ -163,78 +177,72 @@ func QueryNode(tokens []string) (map[string]Query, map[string]Node) {
 		}
 		query_map[q.Name] = q
 	}
-	
+
 	return query_map, node_map
 }
 
-
-func FillStruct(fields []Field,node_map map[string]Node , count int) string {
+func FillStruct(fields []Field, node_map map[string]Node, count int) string {
 	temp := ""
 	for _, f := range fields {
-		if f.Type == TYPE_INT|| f.Type == TYPE_FLOAT || f.Type == TYPE_STRING || f.Type == TYPE_BOOLEAN || f.Type == TYPE_UUID || f.Type == TYPE_DATETIME {
-			temp += strings.Repeat(" ", (count+1)*2) + f.Name +  "\n"
+		if f.Type == TYPE_INT || f.Type == TYPE_FLOAT || f.Type == TYPE_STRING || f.Type == TYPE_BOOLEAN || f.Type == TYPE_UUID || f.Type == TYPE_DATETIME {
+			temp += strings.Repeat(" ", count*2) + f.Name + "\n"
 		} else {
 			node := node_map[f.Type]
-			temp += strings.Repeat(" ", (count+1)*2) + f.Name + " {\n"
-			if count >5{
-				panic("too deep")
+			temp += strings.Repeat(" ", count*2) + f.Name + " {\n"
+			if count < 5 {
+				temp += FillStruct(node.Fileds, node_map, count*2)
 			}
-			temp += FillStruct(node.Fileds, node_map, (count+1)*2)
 		}
 	}
-	temp += strings.Repeat(" ", (count+1)*2) + "}\n"
+	temp += strings.Repeat(" ", count*2) + "}\n"
 	return temp
 }
 
-func FillInputStruct(fields []Field,node_map map[string]Node , count int) string {
+func FillInputStruct(fields []Field, node_map map[string]Node, count int) string {
 	temp := ""
 	for _, f := range fields {
-		if f.Type == TYPE_INT{
-			temp += strings.Repeat(" ", count*2)+  `"` + f.Name + `": 0` + ",\n"
+		if f.Type == TYPE_INT {
+			temp += strings.Repeat(" ", count*2) + `"` + f.Name + `": 0` + ",\n"
 		} else if f.Type == TYPE_FLOAT {
-			temp +=strings.Repeat(" ", count*2)+ ` "` + f.Name + `": 0.0` + ",\n"
-		}else if f.Type == TYPE_STRING {
-			temp += strings.Repeat(" ", count*2)+` "` + f.Name + `": "NULL"` + ",\n"
-		}else if f.Type == TYPE_BOOLEAN {
-			temp += strings.Repeat(" ", count*2)+` "` + f.Name + `": false` + ",\n"
-		}else if f.Type == TYPE_UUID {
-			temp += strings.Repeat(" ", count*2)+` "` + f.Name + `": "00000000-0000-0000-0000-000000000000"` + ",\n"
-		}else if f.Type == TYPE_DATETIME {
-			temp += strings.Repeat(" ", count*2)+` "` + f.Name + `": "2000-01-01-00:00:00"` + ",\n"
-		}else {
-			temp += strings.Repeat(" ", count*2)+` "input": {` + "\n"
+			temp += strings.Repeat(" ", count*2) + ` "` + f.Name + `": 0.0` + ",\n"
+		} else if f.Type == TYPE_STRING {
+			temp += strings.Repeat(" ", count*2) + ` "` + f.Name + `": "NULL"` + ",\n"
+		} else if f.Type == TYPE_BOOLEAN {
+			temp += strings.Repeat(" ", count*2) + ` "` + f.Name + `": false` + ",\n"
+		} else if f.Type == TYPE_UUID {
+			temp += strings.Repeat(" ", count*2) + ` "` + f.Name + `": "00000000-0000-0000-0000-000000000000"` + ",\n"
+		} else if f.Type == TYPE_DATETIME {
+			temp += strings.Repeat(" ", count*2) + ` "` + f.Name + `": "2000-01-01-00:00:00"` + ",\n"
+		} else {
+			temp += strings.Repeat(" ", count*2) + ` "input": {` + "\n"
 			node := node_map[f.Type]
-			temp += FillInputStruct(node.Fileds, node_map, (count+1)*2)
-			if len(temp) != 0 {
-			temp = temp[:len(temp)-2] + "\n"
-			}
-			temp += strings.Repeat(" ", count*2)+` }` + ",\n"
+			temp += FillInputStruct(node.Fileds, node_map, count+1)
+			temp += strings.Repeat(" ", count*2) + ` }` + ",\n"
 		}
 	}
-
-			if len(temp) != 0 {
-			temp = temp[:len(temp)-2] + "\n"
-			}
+	if temp[len(temp)-2:] == ",\n" {
+		temp = temp[:len(temp)-2] + "\n"
+	}
 	return temp
 }
 
 func FillMutationInput(q Query, node_map map[string]Node) string {
 	temp := ""
 	for _, f := range q.Inputs {
-		if f.Type == TYPE_INT{
+		if f.Type == TYPE_INT {
 			temp += "$" + f.Name + ": Int!"
 		} else if f.Type == TYPE_FLOAT {
 			temp += "$" + f.Name + ": Float!"
-		}else if f.Type == TYPE_STRING {
+		} else if f.Type == TYPE_STRING {
 			temp += "$" + f.Name + ": String!"
-		}else if f.Type == TYPE_BOOLEAN {
+		} else if f.Type == TYPE_BOOLEAN {
 			temp += "$" + f.Name + ": Boolean!"
-		}else if f.Type == TYPE_UUID {
+		} else if f.Type == TYPE_UUID {
 			temp += "$" + f.Name + ": UUID!"
-		}else if f.Type == TYPE_DATETIME {
+		} else if f.Type == TYPE_DATETIME {
 			temp += "$" + f.Name + ": DateTime!"
-		}else {
-			temp += "$input" +  ": " + f.Type + "!"
+		} else {
+			temp += "$input" + ": " + f.Type + "!"
 		}
 		if f != q.Inputs[len(q.Inputs)-1] {
 			temp += ","
@@ -243,20 +251,20 @@ func FillMutationInput(q Query, node_map map[string]Node) string {
 	temp += ") {\n"
 	temp += "  " + q.Name + "("
 	for _, f := range q.Inputs {
-		if f.Type == TYPE_INT{
+		if f.Type == TYPE_INT {
 			temp += f.Name + ": $" + f.Name
 		} else if f.Type == TYPE_FLOAT {
 			temp += f.Name + ": $" + f.Name
-		}else if f.Type == TYPE_STRING {
+		} else if f.Type == TYPE_STRING {
 			temp += f.Name + ": $" + f.Name
-		}else if f.Type == TYPE_BOOLEAN {
+		} else if f.Type == TYPE_BOOLEAN {
 			temp += f.Name + ": $" + f.Name
-		}else if f.Type == TYPE_UUID {
+		} else if f.Type == TYPE_UUID {
 			temp += f.Name + ": $" + f.Name
-		}else if f.Type == TYPE_DATETIME {
+		} else if f.Type == TYPE_DATETIME {
 			temp += f.Name + ": $" + f.Name
-		}else {
-			temp += "input" +  ": $" + "input"
+		} else {
+			temp += "input" + ": $" + "input"
 		}
 		if f != q.Inputs[len(q.Inputs)-1] {
 			temp += ","
