@@ -1,0 +1,22 @@
+type UserGroup {
+  id: UUID!
+  name: String!
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+type UserRole {
+  id: UUID!
+  name: String!
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+type User {
+  id: UUID!
+  name: String!
+  group: UserGroup
+  role: UserRole
+  createdAt: DateTime
+  updatedAt: DateTime
+}
