@@ -10,6 +10,7 @@ import (
 
 func main() {
 	targetDir := "input_graphqls"
+	max_depth := 2
 	files, _ := ioutil.ReadDir(targetDir)
 	targetString := ""
 	for _, f := range files {
@@ -35,7 +36,7 @@ func main() {
 			temp += "mutation ("
 			input_string := pkg.FillMutationInput(q, node_map)
 			temp += input_string + "){" + "\n"
-			filed_string := pkg.FillStruct(q.Outputs, node_map, 1)
+			filed_string := pkg.FillStruct(q.Outputs, node_map, 1,max_depth)
 			temp += filed_string
 			temp += "}\n"
 			temp += "\n{\n"
@@ -58,9 +59,9 @@ func main() {
 				}
 				temp += ") {\n"
 			}
-			filed_string := pkg.FillStruct(q.Outputs, node_map, 1)
+			filed_string := pkg.FillStruct(q.Outputs, node_map, 1,max_depth)
 			temp += filed_string
-			temp += " }\n"
+			temp += "}\n"
 			if q.Inputs != nil {
 				temp += "\n{\n"
 				filled_string := pkg.FillInputStruct(q.Inputs, node_map, 0)

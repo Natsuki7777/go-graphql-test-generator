@@ -181,16 +181,16 @@ func QueryNode(tokens []string) (map[string]Query, map[string]Node) {
 	return query_map, node_map
 }
 
-func FillStruct(fields []Field, node_map map[string]Node, count int) string {
+func FillStruct(fields []Field, node_map map[string]Node, count int,max_depth int) string {
 	temp := ""
 	for _, f := range fields {
 		if f.Type == TYPE_INT || f.Type == TYPE_FLOAT || f.Type == TYPE_STRING || f.Type == TYPE_BOOLEAN || f.Type == TYPE_UUID || f.Type == TYPE_DATETIME {
 			temp += strings.Repeat(" ", count*2) + f.Name + "\n"
 		} else {
-			node := node_map[f.Type]
-			temp += strings.Repeat(" ", count*2) + f.Name + " {\n"
-			if count < 5 {
-				temp += FillStruct(node.Fileds, node_map, count*2)
+			if count < max_depth {
+				node := node_map[f.Type]
+				temp += strings.Repeat(" ", count*2) + f.Name + " {\n"
+				temp += FillStruct(node.Fileds, node_map, count+1,max_depth)
 			}
 		}
 	}
