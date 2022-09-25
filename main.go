@@ -14,8 +14,8 @@ import (
 const (
 	TARGET_DIR  = "input_graphqls"
 	MAX_DEPTH   = 6
-	GRAPHOUTPUT = "outputs/output.graphql"
-	GOOUTPUT    = "outputs/output.go"
+	GRAPHOUTPUT = "outputs/graphql_test.graphql"
+	GOOUTPUT    = "outputs/graohql_test.go"
 )
 
 func main() {

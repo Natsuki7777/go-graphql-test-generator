@@ -37,12 +37,11 @@ func TestQueryuser(t *testing.T) {
     }
  }
 `)
-	
+
 	req.Var("id", "00000000-0000-0000-0000-000000000000")
 
-	
 	var respData interface{}
-		if err := client.Run(context.Background(), req, &respData); err != nil {
+	if err := client.Run(context.Background(), req, &respData); err != nil {
 		t.Fatal(err)
 	}
 	t.Log(respData)
@@ -60,12 +59,11 @@ func TestQueryuserGroup(t *testing.T) {
     }
  }
 `)
-	
+
 	req.Var("id", "00000000-0000-0000-0000-000000000000")
 
-	
 	var respData interface{}
-		if err := client.Run(context.Background(), req, &respData); err != nil {
+	if err := client.Run(context.Background(), req, &respData); err != nil {
 		t.Fatal(err)
 	}
 	t.Log(respData)
@@ -83,9 +81,9 @@ func TestQueryuserGroups(t *testing.T) {
     }
  }
 `)
-	
+
 	var respData interface{}
-		if err := client.Run(context.Background(), req, &respData); err != nil {
+	if err := client.Run(context.Background(), req, &respData); err != nil {
 		t.Fatal(err)
 	}
 	t.Log(respData)
@@ -103,12 +101,11 @@ func TestQueryuserRole(t *testing.T) {
     }
  }
 `)
-	
+
 	req.Var("id", "00000000-0000-0000-0000-000000000000")
 
-	
 	var respData interface{}
-		if err := client.Run(context.Background(), req, &respData); err != nil {
+	if err := client.Run(context.Background(), req, &respData); err != nil {
 		t.Fatal(err)
 	}
 	t.Log(respData)
@@ -126,9 +123,9 @@ func TestQueryuserRoles(t *testing.T) {
     }
  }
 `)
-	
+
 	var respData interface{}
-		if err := client.Run(context.Background(), req, &respData); err != nil {
+	if err := client.Run(context.Background(), req, &respData); err != nil {
 		t.Fatal(err)
 	}
 	t.Log(respData)
@@ -158,15 +155,13 @@ func TestQueryusers(t *testing.T) {
     }
  }
 `)
-	
+
 	var respData interface{}
-		if err := client.Run(context.Background(), req, &respData); err != nil {
+	if err := client.Run(context.Background(), req, &respData); err != nil {
 		t.Fatal(err)
 	}
 	t.Log(respData)
 }
-
-
 
 //----------------------------MUTATION----------------------------
 
@@ -194,14 +189,13 @@ func TestMutaioncreateUser(t *testing.T) {
     }
  }
 `)
-	
-	req.Var("input", map[string]interface{}{
-   "name": "",
-   "group": "00000000-0000-0000-0000-000000000000",
-   "role": "00000000-0000-0000-0000-000000000000",
-})
 
-	
+	req.Var("input", map[string]interface{}{
+		"name":  "",
+		"group": "00000000-0000-0000-0000-000000000000",
+		"role":  "00000000-0000-0000-0000-000000000000",
+	})
+
 	var respData interface{}
 	if err := client.Run(context.Background(), req, &respData); err != nil {
 		t.Fatal(err)
@@ -221,12 +215,11 @@ func TestMutaioncreateUserGroup(t *testing.T) {
     }
  }
 `)
-	
-	req.Var("input", map[string]interface{}{
-   "name": "",
-})
 
-	
+	req.Var("input", map[string]interface{}{
+		"name": "",
+	})
+
 	var respData interface{}
 	if err := client.Run(context.Background(), req, &respData); err != nil {
 		t.Fatal(err)
@@ -246,12 +239,11 @@ func TestMutaioncreateUserRole(t *testing.T) {
     }
  }
 `)
-	
-	req.Var("input", map[string]interface{}{
-   "name": "",
-})
 
-	
+	req.Var("input", map[string]interface{}{
+		"name": "",
+	})
+
 	var respData interface{}
 	if err := client.Run(context.Background(), req, &respData); err != nil {
 		t.Fatal(err)
@@ -283,15 +275,14 @@ func TestMutaionupdateUser(t *testing.T) {
     }
  }
 `)
-	
-	req.Var("id", "00000000-0000-0000-0000-000000000000")
-req.Var("input", map[string]interface{}{
-   "name": "",
-   "group": "00000000-0000-0000-0000-000000000000",
-   "role": "00000000-0000-0000-0000-000000000000",
-})
 
-	
+	req.Var("id", "00000000-0000-0000-0000-000000000000")
+	req.Var("input", map[string]interface{}{
+		"name":  "",
+		"group": "00000000-0000-0000-0000-000000000000",
+		"role":  "00000000-0000-0000-0000-000000000000",
+	})
+
 	var respData interface{}
 	if err := client.Run(context.Background(), req, &respData); err != nil {
 		t.Fatal(err)
@@ -311,13 +302,12 @@ func TestMutaionupdateUserGroup(t *testing.T) {
     }
  }
 `)
-	
-	req.Var("id", "00000000-0000-0000-0000-000000000000")
-req.Var("input", map[string]interface{}{
-   "name": "",
-})
 
-	
+	req.Var("id", "00000000-0000-0000-0000-000000000000")
+	req.Var("input", map[string]interface{}{
+		"name": "",
+	})
+
 	var respData interface{}
 	if err := client.Run(context.Background(), req, &respData); err != nil {
 		t.Fatal(err)
@@ -337,17 +327,15 @@ func TestMutaionupdateUserRole(t *testing.T) {
     }
  }
 `)
-	
-	req.Var("id", "00000000-0000-0000-0000-000000000000")
-req.Var("input", map[string]interface{}{
-   "name": "",
-})
 
-	
+	req.Var("id", "00000000-0000-0000-0000-000000000000")
+	req.Var("input", map[string]interface{}{
+		"name": "",
+	})
+
 	var respData interface{}
 	if err := client.Run(context.Background(), req, &respData); err != nil {
 		t.Fatal(err)
 	}
 	t.Log(respData)
 }
-

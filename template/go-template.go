@@ -21,7 +21,7 @@ func TestQuery{{.Name}}(t *testing.T) {
 	{{.Variables}}
 	{{end}}
 	var respData interface{}
-		if err := client.Run(context.Background(), req, &respData); err != nil {
+	if err := client.Run(context.Background(), req, &respData); err != nil {
 		t.Fatal(err)
 	}
 	t.Log(respData)
