@@ -153,7 +153,7 @@ mutation ($input: UserInput!) {
 # Variables
 #{
 # "input": {
-#   "name": "test",
+#   "name": "",
 #   "group": "00000000-0000-0000-0000-000000000000",
 #   "role": "00000000-0000-0000-0000-000000000000"
 # }
@@ -174,7 +174,7 @@ mutation ($input: UserGroupInput!) {
 # Variables
 #{
 # "input": {
-#   "name": "test"
+#   "name": ""
 # }
 #}
 
@@ -193,7 +193,7 @@ mutation ($input: UserRoleInput!) {
 # Variables
 #{
 # "input": {
-#   "name": "test"
+#   "name": ""
 # }
 #}
 
@@ -225,7 +225,7 @@ mutation ($id: UUID!,$input: UserInput!) {
 #{
 # "id": "00000000-0000-0000-0000-000000000000",
 # "input": {
-#   "name": "test",
+#   "name": "",
 #   "group": "00000000-0000-0000-0000-000000000000",
 #   "role": "00000000-0000-0000-0000-000000000000"
 # }
@@ -247,7 +247,7 @@ mutation ($id: UUID!,$input: UserGroupInput!) {
 #{
 # "id": "00000000-0000-0000-0000-000000000000",
 # "input": {
-#   "name": "test"
+#   "name": ""
 # }
 #}
 
@@ -267,7 +267,7 @@ mutation ($id: UUID!,$input: UserRoleInput!) {
 #{
 # "id": "00000000-0000-0000-0000-000000000000",
 # "input": {
-#   "name": "test"
+#   "name": ""
 # }
 #}
 

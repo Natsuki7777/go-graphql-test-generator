@@ -258,13 +258,13 @@ func FillInputStruct(fields []Field, node_map map[string]Node, count int) string
 		} else if f.Type == TYPE_FLOAT {
 			temp += strings.Repeat(" ", count*2) + ` "` + f.Name + `": 0.0` + ",\n"
 		} else if f.Type == TYPE_STRING {
-			temp += strings.Repeat(" ", count*2) + ` "` + f.Name + `": "test"` + ",\n"
+			temp += strings.Repeat(" ", count*2) + ` "` + f.Name + `": ""` + ",\n"
 		} else if f.Type == TYPE_BOOLEAN {
 			temp += strings.Repeat(" ", count*2) + ` "` + f.Name + `": false` + ",\n"
 		} else if f.Type == TYPE_UUID {
 			temp += strings.Repeat(" ", count*2) + ` "` + f.Name + `": "00000000-0000-0000-0000-000000000000"` + ",\n"
 		} else if f.Type == TYPE_DATETIME {
-			temp += strings.Repeat(" ", count*2) + ` "` + f.Name + `": "2000-01-01-00:00:00"` + ",\n"
+			temp += strings.Repeat(" ", count*2) + ` "` + f.Name + `": "2006-01-02T15:04:05Z07:00"` + ",\n"
 		} else {
 			temp += strings.Repeat(" ", count*2) + ` "input": {` + "\n"
 			node := node_map[f.Type]

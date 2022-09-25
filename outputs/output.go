@@ -196,7 +196,7 @@ func TestMutaioncreateUser(t *testing.T) {
 `)
 	
 	req.Var("input", map[string]interface{}{
-   "name": "test",
+   "name": "",
    "group": "00000000-0000-0000-0000-000000000000",
    "role": "00000000-0000-0000-0000-000000000000",
 })
@@ -223,7 +223,7 @@ func TestMutaioncreateUserGroup(t *testing.T) {
 `)
 	
 	req.Var("input", map[string]interface{}{
-   "name": "test",
+   "name": "",
 })
 
 	
@@ -248,7 +248,7 @@ func TestMutaioncreateUserRole(t *testing.T) {
 `)
 	
 	req.Var("input", map[string]interface{}{
-   "name": "test",
+   "name": "",
 })
 
 	
@@ -286,7 +286,7 @@ func TestMutaionupdateUser(t *testing.T) {
 	
 	req.Var("id", "00000000-0000-0000-0000-000000000000")
 req.Var("input", map[string]interface{}{
-   "name": "test",
+   "name": "",
    "group": "00000000-0000-0000-0000-000000000000",
    "role": "00000000-0000-0000-0000-000000000000",
 })
@@ -314,7 +314,7 @@ func TestMutaionupdateUserGroup(t *testing.T) {
 	
 	req.Var("id", "00000000-0000-0000-0000-000000000000")
 req.Var("input", map[string]interface{}{
-   "name": "test",
+   "name": "",
 })
 
 	
@@ -340,7 +340,7 @@ func TestMutaionupdateUserRole(t *testing.T) {
 	
 	req.Var("id", "00000000-0000-0000-0000-000000000000")
 req.Var("input", map[string]interface{}{
-   "name": "test",
+   "name": "",
 })
 
 	
