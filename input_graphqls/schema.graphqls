@@ -15,7 +15,7 @@ type UserRole {
 type User {
   id: UUID!
   name: String!
-  group: UserGroup
+  group: [UserGroup]
   role: UserRole
   createdAt: DateTime
   updatedAt: DateTime

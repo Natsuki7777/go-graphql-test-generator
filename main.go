@@ -1,16 +1,29 @@
 package main
 
 import (
+	"fmt"
 	"io/ioutil"
 	"os"
+	"sort"
 	"strings"
+	"text/template"
 
 	"github.com/Natsuki7777/go-graphql-test-generator/pkg"
 )
 
+const (
+	TARGET_DIR  = "input_graphqls"
+	MAX_DEPTH   = 6
+	GRAPHOUTPUT = "outputs/output.graphql"
+	GOOUTPUT    = "outputs/output.go"
+)
+
 func main() {
-	targetDir := "input_graphqls"
-	max_depth := 2
+	targetDir := TARGET_DIR
+	max_depth := MAX_DEPTH
+	graph_output := GRAPHOUTPUT
+	go_output := GOOUTPUT
+
 	files, _ := ioutil.ReadDir(targetDir)
 	targetString := ""
 	for _, f := range files {
@@ -19,6 +32,7 @@ func main() {
 			filePath := targetDir + "/" + fileName
 			file, err := ioutil.ReadFile(filePath)
 			if err != nil {
+				fmt.Println(err)
 			}
 			fileString := string(file)
 			targetString += fileString
@@ -28,53 +42,77 @@ func main() {
 	tokens := pkg.TokenizeInput(targetString)
 	query_map, node_map := pkg.QueryNode(tokens)
 
-	result := ""
-
-	for _, q := range query_map {
-		temp := "\n"
-		if q.Type == pkg.MUTATION {
-			temp += "mutation ("
-			input_string := pkg.FillMutationInput(q, node_map)
-			temp += input_string + "){" + "\n"
-			filed_string := pkg.FillStruct(q.Outputs, node_map, 1,max_depth)
-			temp += filed_string
-			temp += "}\n"
-			temp += "\n{\n"
-			filled_string := pkg.FillInputStruct(q.Inputs, node_map, 0)
-			temp += filled_string
-			temp += "}\n"
-		} else if q.Type == pkg.QUERY {
-			if q.Inputs == nil {
-				temp += "query {\n"
-				temp += " " + q.Name + " {\n"
-			} else {
-				temp += "query ("
-				for _, input := range q.Inputs {
-					temp += "$" + input.Name + ": " + input.Type + "!"
-					temp += ") {\n"
-				}
-				temp += " " + q.Name + "("
-				for _, input := range q.Inputs {
-					temp += input.Name + ": $" + input.Name
-				}
-				temp += ") {\n"
-			}
-			filed_string := pkg.FillStruct(q.Outputs, node_map, 1,max_depth)
-			temp += filed_string
-			temp += "}\n"
-			if q.Inputs != nil {
-				temp += "\n{\n"
-				filled_string := pkg.FillInputStruct(q.Inputs, node_map, 0)
-				temp += filled_string
-				temp += "}\n"
-			}
-		}
-		result += temp
+	for k, q := range query_map {
+		context, variables := pkg.GenerateContextVariables(q, node_map, 0, max_depth)
+		q.Context = context
+		q.Variables = variables
+		query_map[k] = q
 	}
-	f, err := os.Create("output.graphql")
+
+	type Data struct {
+		Query    []pkg.Query
+		Mutation []pkg.Query
+	}
+
+	graphql_template, err := template.ParseFiles("template/graphql-template.graphqls")
+	if err != nil {
+		fmt.Println(err)
+	}
+	graphql_data := Data{}
+	for _, q := range query_map {
+		gq := pkg.Query{}
+		gq.Name = q.Name
+		gq.Context = q.Context
+		if q.Variables != "" {
+			gq.Variables = "# Variables\n#" + strings.Replace(q.Variables, "\n", "\n#", -1)
+		}
+		if q.Type == pkg.MUTATION {
+			graphql_data.Mutation = append(graphql_data.Mutation, gq)
+		} else if q.Type == pkg.QUERY {
+			graphql_data.Query = append(graphql_data.Query, gq)
+		}
+	}
+	sort.Slice(graphql_data.Query, func(i, j int) bool {
+		return graphql_data.Query[i].Name < graphql_data.Query[j].Name
+	})
+	sort.Slice(graphql_data.Mutation, func(i, j int) bool {
+		return graphql_data.Mutation[i].Name < graphql_data.Mutation[j].Name
+	})
+	f, err := os.Create(graph_output)
 	if err != nil {
 		panic(err)
 	}
+	graphql_template.Execute(f, graphql_data)
 	defer f.Close()
-	f.WriteString(result)
+
+	go_template, err := template.ParseFiles("template/go-template.go")
+	if err != nil {
+		panic(err)
+	}
+	go_data := Data{}
+	for _, q := range query_map {
+		gq := pkg.Query{}
+		gq.Name = q.Name
+		gq.Context = q.Context
+		if q.Variables != "" {
+			gq.Variables = pkg.FillQueryVariables(q.Inputs, node_map)
+		}
+		if q.Type == pkg.MUTATION {
+			go_data.Mutation = append(go_data.Mutation, gq)
+		} else if q.Type == pkg.QUERY {
+			go_data.Query = append(go_data.Query, gq)
+		}
+	}
+	sort.Slice(go_data.Query, func(i, j int) bool {
+		return go_data.Query[i].Name < go_data.Query[j].Name
+	})
+	sort.Slice(go_data.Mutation, func(i, j int) bool {
+		return go_data.Mutation[i].Name < go_data.Mutation[j].Name
+	})
+	f, err = os.Create(go_output)
+	if err != nil {
+		panic(err)
+	}
+	go_template.Execute(f, go_data)
+	defer f.Close()
 }
