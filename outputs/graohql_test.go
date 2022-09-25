@@ -13,7 +13,7 @@ const (
 
 //----------------------------QUERY----------------------------
 
-func TestQueryuser(t *testing.T) {
+func TestQueryUser(t *testing.T) {
 	client := graphql.NewClient(HOST)
 	req := graphql.NewRequest(`
 	query ($id: UUID!) {
@@ -48,7 +48,7 @@ func TestQueryuser(t *testing.T) {
 	t.Log(respData)
 }
 
-func TestQueryuserGroup(t *testing.T) {
+func TestQueryUserGroup(t *testing.T) {
 	client := graphql.NewClient(HOST)
 	req := graphql.NewRequest(`
 	query ($id: UUID!) {
@@ -71,7 +71,7 @@ func TestQueryuserGroup(t *testing.T) {
 	t.Log(respData)
 }
 
-func TestQueryuserGroups(t *testing.T) {
+func TestQueryUserGroups(t *testing.T) {
 	client := graphql.NewClient(HOST)
 	req := graphql.NewRequest(`
 	query {
@@ -91,7 +91,7 @@ func TestQueryuserGroups(t *testing.T) {
 	t.Log(respData)
 }
 
-func TestQueryuserRole(t *testing.T) {
+func TestQueryUserRole(t *testing.T) {
 	client := graphql.NewClient(HOST)
 	req := graphql.NewRequest(`
 	query ($id: UUID!) {
@@ -114,7 +114,7 @@ func TestQueryuserRole(t *testing.T) {
 	t.Log(respData)
 }
 
-func TestQueryuserRoles(t *testing.T) {
+func TestQueryUserRoles(t *testing.T) {
 	client := graphql.NewClient(HOST)
 	req := graphql.NewRequest(`
 	query {
@@ -134,7 +134,7 @@ func TestQueryuserRoles(t *testing.T) {
 	t.Log(respData)
 }
 
-func TestQueryusers(t *testing.T) {
+func TestQueryUsers(t *testing.T) {
 	client := graphql.NewClient(HOST)
 	req := graphql.NewRequest(`
 	query {
@@ -170,7 +170,7 @@ func TestQueryusers(t *testing.T) {
 
 //----------------------------MUTATION----------------------------
 
-func TestMutaioncreateUser(t *testing.T) {
+func TestMutaionCreateUser(t *testing.T) {
 	client := graphql.NewClient(HOST)
 	req := graphql.NewRequest(`
 	mutation ($input: UserInput!) {
@@ -209,7 +209,7 @@ func TestMutaioncreateUser(t *testing.T) {
 	t.Log(respData)
 }
 
-func TestMutaioncreateUserGroup(t *testing.T) {
+func TestMutaionCreateUserGroup(t *testing.T) {
 	client := graphql.NewClient(HOST)
 	req := graphql.NewRequest(`
 	mutation ($input: UserGroupInput!) {
@@ -234,7 +234,7 @@ func TestMutaioncreateUserGroup(t *testing.T) {
 	t.Log(respData)
 }
 
-func TestMutaioncreateUserRole(t *testing.T) {
+func TestMutaionCreateUserRole(t *testing.T) {
 	client := graphql.NewClient(HOST)
 	req := graphql.NewRequest(`
 	mutation ($input: UserRoleInput!) {
@@ -259,7 +259,7 @@ func TestMutaioncreateUserRole(t *testing.T) {
 	t.Log(respData)
 }
 
-func TestMutaionupdateUser(t *testing.T) {
+func TestMutaionUpdateUser(t *testing.T) {
 	client := graphql.NewClient(HOST)
 	req := graphql.NewRequest(`
 	mutation ($id: UUID!,$input: UserInput!) {
@@ -299,7 +299,7 @@ req.Var("input", map[string]interface{}{
 	t.Log(respData)
 }
 
-func TestMutaionupdateUserGroup(t *testing.T) {
+func TestMutaionUpdateUserGroup(t *testing.T) {
 	client := graphql.NewClient(HOST)
 	req := graphql.NewRequest(`
 	mutation ($id: UUID!,$input: UserGroupInput!) {
@@ -325,7 +325,7 @@ req.Var("input", map[string]interface{}{
 	t.Log(respData)
 }
 
-func TestMutaionupdateUserRole(t *testing.T) {
+func TestMutaionUpdateUserRole(t *testing.T) {
 	client := graphql.NewClient(HOST)
 	req := graphql.NewRequest(`
 	mutation ($id: UUID!,$input: UserRoleInput!) {

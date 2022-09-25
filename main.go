@@ -92,7 +92,7 @@ func main() {
 	go_data := Data{}
 	for _, q := range query_map {
 		gq := pkg.Query{}
-		gq.Name = q.Name
+		gq.Name = strings.ToUpper(q.Name[0:1]) + q.Name[1:]
 		gq.Context = q.Context
 		if q.Variables != "" {
 			gq.Variables = pkg.FillQueryVariables(q.Inputs, node_map)
