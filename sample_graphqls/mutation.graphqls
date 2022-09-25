@@ -1,0 +1,23 @@
+type Mutation {
+  createUserGroup(input: UserGroupInput!): UserGroup!
+  updateUserGroup(id: UUID!, input: UserGroupInput!): UserGroup!
+
+  createUserRole(input: UserRoleInput!): UserRole!
+  updateUserRole(id: UUID!, input: UserRoleInput!): UserRole!
+
+  createUser(input: UserInput!): User!
+  updateUser(id: UUID!, input: UserInput!): User!
+}
+
+input UserGroupInput {
+  name: String!
+}
+input UserRoleInput {
+  name: String!
+}
+
+input UserInput {
+  name: String
+  group: UUID
+  role: UUID
+}

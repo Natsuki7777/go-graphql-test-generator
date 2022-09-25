@@ -1,0 +1,8 @@
+type Query {
+  userGroup(id: UUID!): UserGroup
+  userGroups: [UserGroup]
+  userRole(id: UUID!): UserRole
+  userRoles: [UserRole]
+  user(id: UUID!): User #this is comment
+  users: [User]
+}

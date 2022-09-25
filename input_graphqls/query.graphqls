@@ -3,6 +3,46 @@ type Query {
   userGroups: [UserGroup]
   userRole(id: UUID!): UserRole
   userRoles: [UserRole]
-  user(id: UUID!): User #this is comment
+  user(id: UUID!): User
   users: [User]
+  customer(id: UUID!): Customer
+  customers: [Customer]
+  productStock(id: UUID!): ProductStock
+  materialStock(id: UUID!): MaterialStock
+  component(id: UUID!): Component
+  components: [Component]
+  componentImage(id: UUID!): ComponentImage
+  componentImages: [ComponentImage]
+  componentManufacturingTip(id: UUID!): ComponentManufacturingTip
+  componentManufacturingTips: [ComponentManufacturingTip]
+  factoryLine(id: UUID!): FactoryLine
+  factoryLines: [FactoryLine]
+  jigHanger(id: UUID!): JigHanger
+  jigHangers: [JigHanger]
+  jigBarrel(id: UUID!): JigBarrel
+  jigBarrels: [JigBarrel]
+  lineConfig(id: UUID!): LineConfig
+  lineConfigs: [LineConfig]
+  order(id: UUID!): Order
+  orders: [Order]
+  orderClass(id: UUID!): OrderClass
+  orderClasses: [OrderClass]
+  orderState(id: UUID!): OrderState
+  orderStates: [OrderState]
+  instruction(id: UUID!): Instruction
+  instructions: [Instruction]
+  operation(id: UUID!): Operation
+  operations: [Operation]
+  operationState(id: UUID!): OperationState
+  operationStates: [OperationState]
+  operationBadDetail(id: UUID!): OperationBadDetail
+  operationBadDetails: [OperationBadDetail]
+  badDetailReason(id: UUID!): BadDetailReason
+  badDetailReasons: [BadDetailReason]
+  shipping(id: UUID!): Shipping
+  shippings: [Shipping]
+  receipt(id: UUID!): Receipt
+  receipts: [Receipt]
+  billing(id: UUID!): Billing
+  billings: [Billing]
 }
